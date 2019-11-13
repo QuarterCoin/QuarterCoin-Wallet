@@ -126,7 +126,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x000000afe6015422eece3cf085516074d51078992993b626a14607d7e857929d");
+        consensus.defaultAssumeValid = uint256S("0x"); //hashGenesisBlock
 
         pchMessageStart[0] = 0x51; // Q
         pchMessageStart[1] = 0x54; // T
@@ -137,8 +137,8 @@ public:
 
         genesis = CreateGenesisBlock(1430624250, 685925, 0x1e00ffff, 2, 5000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("000000afe6015422eece3cf085516074d51078992993b626a14607d7e857929d"));
-        assert(genesis.hashMerkleRoot == uint256S("e0b8228ac88006fa976b39dcf2699bd186fbfce90ef908e320e7ab3d17e1daf7"));
+        assert(consensus.hashGenesisBlock == uint256S(""));
+        assert(genesis.hashMerkleRoot == uint256S(""));
 
         vSeeds.emplace_back("165.22.57.66", false);
 
@@ -158,7 +158,7 @@ public:
         // When adding a checkpoint. Update the default assume valid hash above to speed up sync times
         checkpointData = (CCheckpointData) {
             {
-                    { 0, uint256S("000000afe6015422eece3cf085516074d51078992993b626a14607d7e857929d") },
+                    { 0, uint256S("") }, //hashGenesisBlock
             }
         };
 
@@ -244,7 +244,7 @@ public:
         nDefaultPort = 48145;
         nPruneAfterHeight = 1000;
 
-        uint32_t nGenesisTime = 1430624350;
+        uint32_t nGenesisTime = 1573617161;
         genesis = CreateGenesisBlock(nGenesisTime, 6122968, 0x1e00ffff, 2, 500 * COIN);
 
         consensus.hashGenesisBlock = genesis.GetHash();
