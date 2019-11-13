@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Quartercoin Core
+Comment=Connect to the Quartercoin P2P Network
+Comment[de]=Verbinde mit dem Quartercoin peer-to-peer Netzwerk
+Comment[fr]=Quartercoin, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=Quartercoin, eşten eşe kriptografik sanal para birimi
+Exec=quartercoin-qt %u
+Terminal=false
+Type=Application
+Icon=quartercoin128
+MimeType=x-scheme-handler/quartercoin;
+Categories=Office;Finance;

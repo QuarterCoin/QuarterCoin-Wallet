@@ -1,0 +1,33 @@
+# /etc/conf.d/quartercoind: config file for /etc/init.d/quartercoind
+
+# Config file location
+#QTCD_CONFIGFILE="/etc/quartercoin/quartercoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $QTCD_USER)
+#QTCD_PIDDIR="/var/run/quartercoind"
+
+# What filename to give the pidfile
+#QTCD_PIDFILE="${QTCD_PIDDIR}/quartercoind.pid"
+
+# Where to write quartercoind data (be mindful that the blockchain is large)
+#QTCD_DATADIR="/var/lib/quartercoind"
+
+# User and group to own quartercoind process
+#QTCD_USER="quartercoin"
+#QTCD_GROUP="quartercoin"
+
+# Path to quartercoind executable
+#QTCD_BIN="/usr/bin/quartercoind"
+
+# Nice value to run quartercoind under
+#QTCD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#QTCD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for quartercoind to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+QTCD_SIGTERM_TIMEOUT=60

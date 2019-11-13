@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/quartercoin/.quartercoin" ]; then
+	QTCD_DEFAULT_DATADIR="/var/lib/quartercoin/.quartercoin"
+else
+	QTCD_DEFAULT_DATADIR="/var/lib/quartercoind"
+fi
+
+QTCD_CONFIGFILE=${QTCD_CONFIGFILE:-/etc/quartercoin/quartercoin.conf}
+QTCD_PIDDIR=${QTCD_PIDDIR:-/var/run/quartercoind}
+QTCD_PIDFILE=${QTCD_PIDFILE:-${QTCD_PIDDIR}/quartercoind.pid}
+QTCD_DATADIR=${QTCD_DATADIR:-${QTCD_DEFAULT_DATADIR}}
+QTCD_USER=${QTCD_USER:-${QTC_USER:-quartercoin}}
+QTCD_GROUP=${QTCD_GROUP:-quartercoin}
+QTCD_BIN=${QTCD_BIN:-/usr/bin/quartercoind}
+QTCD_NICE=${QTCD_NICE:-${NICELEVEL:-0}}
+QTCD_OPTS="${QTCD_OPTS:-${QTC_OPTS}}"
+
+name="Quartercoin Core Daemon"
+description="Quartercoin cryptocurrency P2P network daemon"
+
+command="/usr/bin/quartercoind"
+command_args="-pid=\"${QTCD_PIDFILE}\" \
+		-conf=\"${QTCD_CONFIGFILE}\" \
+		-datadir=\"${QTCD_DATADIR}\" \
+		-daemon \
+		${QTCD_OPTS}"
+
+required_files="${QTCD_CONFIGFILE}"
+start_stop_daemon_args="-u ${QTCD_USER} \
+			-N ${QTCD_NICE} -w 2000"
+pidfile="${QTCD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${QTCD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${QTCD_USER}:${QTCD_GROUP}" \
+	"${QTCD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${QTCD_USER}:${QTCD_GROUP}" \
+	"${QTCD_PIDDIR}"
+
+	checkpath -f \
+	-o ${QTCD_USER}:${QTCD_GROUP} \
+	-m 0660 \
+	${QTCD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${QTCD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run quartercoind."
+		eerror "The setting must appear in ${QTCD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Quartercoin Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

@@ -1,0 +1,6 @@
+usr/local/bin/quartercoin-qt usr/bin
+share/pixmaps/quartercoin32.xpm usr/share/pixmaps
+share/pixmaps/quartercoin16.xpm usr/share/pixmaps
+share/pixmaps/quartercoin128.png usr/share/pixmaps
+debian/quartercoin-qt.desktop usr/share/applications
+debian/quartercoin-qt.protocol usr/share/kde4/services/
