@@ -69,7 +69,7 @@ sudo apt-get install libqt4-dev libprotobuf-dev protobuf-compiler
 
  1.2 Cloning quartercoin
 
-git clone  https://github.com/QuarterCoin/Quarter-Coin-Wallet
+git clone  https://github.com/QuarterCoin/QuarterCoin-Wallet
 
 
 
