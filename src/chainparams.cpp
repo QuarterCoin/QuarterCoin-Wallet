@@ -24,61 +24,23 @@ extern int algoHashHits[16];
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    // CMutableTransaction txNew;
-    // txNew.nVersion = 1;
-    // txNew.vin.resize(1);
-    // txNew.vout.resize(1);
-    // txNew.vin[0].scriptSig = CScript() << CScriptNum(0) << 486604799 << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-    // txNew.vout[0].nValue = genesisReward;
-    // txNew.vout[0].scriptPubKey = genesisOutputScript;
+    CMutableTransaction txNew;
+    txNew.nVersion = 1;
+    txNew.vin.resize(1);
+    txNew.vout.resize(1);
+    txNew.vin[0].scriptSig = CScript() << CScriptNum(0) << 486604799 << CScriptNum(4) << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
+    txNew.vout[0].nValue = genesisReward;
+    txNew.vout[0].scriptPubKey = genesisOutputScript;
 
-    // CBlock genesis;
-    // genesis.nTime    = nTime;
-    // genesis.nBits    = nBits;
-    // genesis.nNonce   = nNonce;
-    // genesis.nVersion = nVersion;
-    // genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
-    // genesis.hashPrevBlock.SetNull();
-    // genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
-    // return genesis;
-
-    uint32_t nGenesisTime = 1430624250;
-    arith_uint256 test;
-    bool fNegative;
-    bool fOverflow;
-    test.SetCompact(0x1e00ffff, &fNegative, &fOverflow);
-    std::cout << "Test threshold: " << test.GetHex() << "\n\n";
-    int genesisNonce = 0;
-    uint256 TempHashHolding = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
-    uint256 BestBlockHash = uint256S("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-    for (int i=0;i<40000000;i++) {
-        genesis = CreateGenesisBlock(nGenesisTime, i, 0x1e00ffff, 2, 5000 * COIN);
-        //genesis.hashPrevBlock = TempHashHolding;
-        consensus.hashGenesisBlock = genesis.GetHash();
-        arith_uint256 BestBlockHashArith = UintToArith256(BestBlockHash);
-        if (UintToArith256(consensus.hashGenesisBlock) < BestBlockHashArith) {
-            BestBlockHash = consensus.hashGenesisBlock;
-            std::cout << BestBlockHash.GetHex() << " Nonce: " << i << "\n";
-            std::cout << "   PrevBlockHash: " << genesis.hashPrevBlock.GetHex() << "\n";
-        std::cout << "hashGenesisBlock to 0x" << BestBlockHash.GetHex() << std::endl;
-        std::cout << "Genesis Nonce to " << genesisNonce << std::endl;
-        std::cout << "Genesis Merkle " << genesis.hashMerkleRoot.GetHex() << std::endl;
-        }
-        TempHashHolding = consensus.hashGenesisBlock;
-        if (BestBlockHashArith < test) {
-            genesisNonce = i - 1;
-            break;
-        }
-        //std::cout << consensus.hashGenesisBlock.GetHex() << "\n";
-    }
-    std::cout << "\n";
-    std::cout << "\n";
-    std::cout << "\n";
-    std::cout << "hashGenesisBlock to 0x" << BestBlockHash.GetHex() << std::endl;
-    std::cout << "Genesis Nonce to " << genesisNonce << std::endl;
-    std::cout << "Genesis Merkle " << genesis.hashMerkleRoot.GetHex() << std::endl;
-    std::cout << "\n";
-    return;
+    CBlock genesis;
+    genesis.nTime    = nTime;
+    genesis.nBits    = nBits;
+    genesis.nNonce   = nNonce;
+    genesis.nVersion = nVersion;
+    genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
+    genesis.hashPrevBlock.SetNull();
+    genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
+    return genesis;
     
 }
 
@@ -174,7 +136,7 @@ public:
         nDefaultPort = 42671;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1430624250, 685925, 0x1e00ffff, 2, 5000 * COIN);
+        genesis = CreateGenesisBlock(1573617161, 685925, 0x1e00ffff, 2, 5000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
         assert(consensus.hashGenesisBlock == uint256S(""));
         assert(genesis.hashMerkleRoot == uint256S(""));
@@ -203,7 +165,7 @@ public:
 
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Quartercoin chain
-            1430624250, // * UNIX timestamp of last known number of transactions
+            1573617161, // * UNIX timestamp of last known number of transactions
             1,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             3.1         // * estimated number of transactions per second after that timestamp
@@ -276,11 +238,11 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
 
-        pchMessageStart[0] = 0x74; // t
-        pchMessageStart[1] = 0x74; // t
-        pchMessageStart[2] = 0x6e; // n
-        pchMessageStart[3] = 0x63; // c
-        nDefaultPort = 48145;
+        pchMessageStart[0] = 0x51; // Q
+        pchMessageStart[1] = 0x54; // T
+        pchMessageStart[2] = 0x52; // R
+        pchMessageStart[3] = 0x43; // C
+        nDefaultPort = 42672;
         nPruneAfterHeight = 1000;
 
         uint32_t nGenesisTime = 1573617161;
@@ -317,7 +279,7 @@ public:
 
         chainTxData = ChainTxData{
             // Update as we know more about the contents of the Quartercoin chain
-            1430624350, // * UNIX timestamp of last known number of transactions
+            1573617161, // * UNIX timestamp of last known number of transactions
             1,          // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the SetBestChain debug.log lines)
             3.1         // * estimated number of transactions per second after that timestamp
