@@ -1,5 +1,3 @@
-![N|Solid](https://quartercoin.co/images/logo.svg)
-
 * Copyright (c) 2009-2019 The Bitcoin Core developers
 * Copyright (c) 2017-2019 The Raven Core developers
 * Copyright (c) 2018-2019 The Rito Core Developers
