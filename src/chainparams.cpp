@@ -49,6 +49,8 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
     const char* pszTimestamp = "May 17 1989 - The creator genesis block is created";
     const CScript genesisOutputScript = CScript() << ParseHex("0452bc90be6bc1dd28d055a36fe791b5ccab96417ed143cc570bfde3c27d32c0c6b1b8ed498a28057102b8b02ec92037518035de8e04882c6c8275a675c02e46dd") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
+
+
 }
 
 void CChainParams::UpdateVersionBitsParameters(Consensus::DeploymentPos d, int64_t nStartTime, int64_t nTimeout)
@@ -127,7 +129,7 @@ public:
         consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x"); //hashGenesisBlock
+        consensus.defaultAssumeValid = uint256S("0x0000004c569f6e115271558fd6d403b95182db3427accb8b604c18657fd297c9"); //hashGenesisBlock
 
         pchMessageStart[0] = 0x51; // Q
         pchMessageStart[1] = 0x54; // T
@@ -136,10 +138,12 @@ public:
         nDefaultPort = 42671;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1573617161, 685925, 0x1e00ffff, 2, 5000 * COIN);
+	//start paste
+
+        genesis = CreateGenesisBlock(1573617161, 12922538, 0x1e00ffff, 2, 5000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S(""));
-        assert(genesis.hashMerkleRoot == uint256S(""));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000004c569f6e115271558fd6d403b95182db3427accb8b604c18657fd297c9"));
+        assert(genesis.hashMerkleRoot == uint256S("62712c1ebfd9a330990397a19b7fa533bf478ac04d9c995ecdc796de7a39843f"));
 
         vSeeds.emplace_back("165.22.57.66", false);
 
@@ -159,7 +163,7 @@ public:
         // When adding a checkpoint. Update the default assume valid hash above to speed up sync times
         checkpointData = (CCheckpointData) {
             {
-                    { 0, uint256S("") }, //hashGenesisBlock
+                    { 0, uint256S("0x0000004c569f6e115271558fd6d403b95182db3427accb8b604c18657fd297c9") }, //hashGenesisBlock
             }
         };
 
@@ -245,19 +249,19 @@ public:
         nDefaultPort = 42672;
         nPruneAfterHeight = 1000;
 
-        uint32_t nGenesisTime = 1573617161;
-        genesis = CreateGenesisBlock(nGenesisTime, 6122968, 0x1e00ffff, 2, 500 * COIN);
+        //start here paste 
+
+	uint32_t nGenesisTime = 1430624250;
+        genesis = CreateGenesisBlock(nGenesisTime, 12323952, 0x1e00ffff, 2, 5000 * COIN);
 
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00000079e8a7910dc35c8313ed7004bb01d8122a78fa24e42d040ad5c0110544"));
-        assert(genesis.hashMerkleRoot == uint256S("cc149e40270ef3c7ed1ffa880221a174e37c7582a1d3d38d19364e311da80dc5"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00000065cb4865dd30f3c044871fee60f6be85c7dc3cd7e933572a94a9cbcb80"));
+        assert(genesis.hashMerkleRoot == uint256S("62712c1ebfd9a330990397a19b7fa533bf478ac04d9c995ecdc796de7a39843f"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
 
-        vSeeds.emplace_back("tn.s1.quartercoin.co", false);
-        vSeeds.emplace_back("tn.s2.quartercoin.co", false);
-        vSeeds.emplace_back("tn.s3.quartercoin.co", false);
+        vSeeds.emplace_back("165.22.57.66.", false);
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,127);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -466,7 +470,7 @@ void TurnOffBIP66() {
 
 // Use this code to calculate a new Genesis Blocks:
     /*
-		uint32_t nGenesisTime = 1430624250;
+	uint32_t nGenesisTime = 1430624250;
         arith_uint256 test;
         bool fNegative;
         bool fOverflow;
